@@ -1,0 +1,12 @@
+PORT = 4000
+
+###########################
+######### MYSQL ###########
+###########################
+MYSQL_CONNECTION_LIMIT = 10
+MYSQL_HOST=localhost
+MYSQL_USER=hidaysco
+MYSQL_PASSWORD=hidaysco
+MYSQL_DATABASE= db_auction
+###########################
+secret_key=dayatGamtenk
