@@ -19,50 +19,50 @@ export default class PetugasHandler implements IHandler{
     }
 
     private initRouter(){
-        this.router.post(`${this.path}/register`, this.registerPetugas)
-        this.router.delete(`${this.path}/delete/:id`, this.deleteOne)
-        this.router.put(`${this.path}/update/`, auth, this.updatePetugas)
+        // this.router.post(`${this.path}/register`, this.registerPetugas)
+        // this.router.delete(`${this.path}/delete/:id`, this.deleteOne)
+        // this.router.put(`${this.path}/update/`, auth, this.updatePetugas)
         this.router.get(`${this.path}/`, auth, this.getPagination)
-        this.router.post(`${this.path}/login`, this.loginPetugas)
+        // this.router.post(`${this.path}/login`, this.loginPetugas)
     }
 
-    private registerPetugas = async(req: Request, res: Response)=>{
-        const payload = req.body
-        const postRequest = async()=>{
-            return this.command.registerPetugas(payload)
-        }
-        const response = (result: { err: any })=>{
-            (result.err) ? this.wrapper.response(res, 'fail', result, `Failed Create Data ${payload.level}`, 400)
-            : this.wrapper.response(res, 'success', result, `Success Create Data ${payload.level}`, 201);
-        }
-        response(await postRequest())
-    }
+    // private registerPetugas = async(req: Request, res: Response)=>{
+    //     const payload = req.body
+    //     const postRequest = async()=>{
+    //         return this.command.registerPetugas(payload)
+    //     }
+    //     const response = (result: { err: any })=>{
+    //         (result.err) ? this.wrapper.response(res, 'fail', result, `Failed Create Data ${payload.level}`, 400)
+    //         : this.wrapper.response(res, 'success', result, `Success Create Data ${payload.level}`, 201);
+    //     }
+    //     response(await postRequest())
+    // }
 
-    private deleteOne = async(req: Request, res: Response)=>{
-        const payload = req.params.id
-        const postRequest = async()=>{
-            return this.command.deleteUser(payload)
-        }
-        const response = (result: { err: any })=>{
-            (result.err) ? this.wrapper.response(res, 'fail', result, 'Failed Delete Data User', 400)
-            : this.wrapper.response(res, 'success', result, 'Success Delete Data User', 200);
-        }
-        response(await postRequest())
-    }
+    // private deleteOne = async(req: Request, res: Response)=>{
+    //     const payload = req.params.id
+    //     const postRequest = async()=>{
+    //         return this.command.deleteUser(payload)
+    //     }
+    //     const response = (result: { err: any })=>{
+    //         (result.err) ? this.wrapper.response(res, 'fail', result, 'Failed Delete Data User', 400)
+    //         : this.wrapper.response(res, 'success', result, 'Success Delete Data User', 200);
+    //     }
+    //     response(await postRequest())
+    // }
 
-    private updatePetugas = async(req: Request, res: Response)=>{
-        const payload = req.body
-        payload.id = req.user._id
+    // private updatePetugas = async(req: Request, res: Response)=>{
+    //     const payload = req.body
+    //     payload.id = req.user._id
         
-        const postRequest = async()=>{
-            return this.command.updateOne(payload)
-        }
-        const response = (result: { err: any })=>{
-            (result.err) ? this.wrapper.response(res, 'fail', result, 'Failed Update Data User', 400)
-            : this.wrapper.response(res, 'success', result, 'Success Update Data User', 200);
-        }
-        response(await postRequest())
-    }
+    //     const postRequest = async()=>{
+    //         return this.command.updateOne(payload)
+    //     }
+    //     const response = (result: { err: any })=>{
+    //         (result.err) ? this.wrapper.response(res, 'fail', result, 'Failed Update Data User', 400)
+    //         : this.wrapper.response(res, 'success', result, 'Success Update Data User', 200);
+    //     }
+    //     response(await postRequest())
+    // }
 
     private getPagination = async(req: Request, res: Response)=>{
         const payload = req.query
@@ -78,15 +78,15 @@ export default class PetugasHandler implements IHandler{
         response(await postRequest())
     }
 
-    private loginPetugas = async(req: Request, res: Response)=>{
-        const payload = req.body
-        const postRequest = async()=>{
-            return this.command.loginPetugas(payload)
-        }
-        const response = (result: { err: any })=>{
-            (result.err) ? this.wrapper.response(res, 'fail', result, 'Failed Login Data User', 400)
-            : this.wrapper.response(res, 'success', result, 'Success Login Data User', 200);
-        }
-        response(await postRequest())
-    }
+    // private loginPetugas = async(req: Request, res: Response)=>{
+    //     const payload = req.body
+    //     const postRequest = async()=>{
+    //         return this.command.loginPetugas(payload)
+    //     }
+    //     const response = (result: { err: any })=>{
+    //         (result.err) ? this.wrapper.response(res, 'fail', result, 'Failed Login Data User', 400)
+    //         : this.wrapper.response(res, 'success', result, 'Success Login Data User', 200);
+    //     }
+    //     response(await postRequest())
+    // }
 }

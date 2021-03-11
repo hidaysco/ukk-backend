@@ -38,6 +38,18 @@ export class Query implements IQuery {
         return result
     }
 
+    async findMetaDashboard(param: any){
+        this.db.setCollection('users')
+        const petugas: any = await this.db.count({role:'petugas'})
+        const user: any = await this.db.count({role:'user'})
+
+        const meta = {
+            totalPetugas: petugas.data,
+            totalUser: user.data,
+        }
+        return meta
+    }
+
     async findMeta(param: any){
         this.db.setCollection('users')
         const{ paramData, page, limit } = param

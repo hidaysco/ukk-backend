@@ -1,12 +1,10 @@
 import { Wrapper } from '../../../utils/helpers/wrapper';
 import { Command } from './command';
 import { Query } from '../queries/query';
-import { generate } from "../../../utils/auth/jwtAuth";
-import { expiredToken } from "../utils/constans";
 import bcryptjs from "bcryptjs";
 
 export default interface ICommandWorker{
-    registerUser(payload: any): any
+    registerPetugas(payload: any): any
 }
 
 export class CommandWorker implements ICommandWorker{
@@ -20,23 +18,25 @@ export class CommandWorker implements ICommandWorker{
         this.wrapper = new Wrapper()
     }
 
-    async registerUser(payload: any) {
-        let { nik, name, username, password }= payload
-        const checkNIK: any = await this.query.findOneUser({nik})
-        if (checkNIK.data) {
-            return this.wrapper.error('NIK Already Registered')
-        }
-        const checkUser: any = await this.query.findOneUser({username})
+    async registerPetugas(payload: any) {
+        let { name, username, password, telp }= payload
+        const checkUser: any = await this.query.findOnePetugas({username})
         if (checkUser.data) {
             return this.wrapper.error('Username Already Registered')
         }
+        // const checkLevel : any = await this.query.checkLevel({level})
+        // console.log(checkLevel);
+        
+        // if (checkLevel == false) {
+        //     return this.wrapper.error('Level Doesnt Exist')
+        // }
         password = this.bcrypt.hashSync(payload.password, this.bcrypt.genSaltSync(10))
         const data = {
-            nik,
             name,
             username,
             password,
-            role: 'user',
+            telp,
+            role: 'petugas',
             createdAt: new Date(Date.now())
         }
         const result: any = await this.command.insertOne(data)
@@ -59,12 +59,15 @@ export class CommandWorker implements ICommandWorker{
     }
 
     async updateOne(payload: any){
-        let { id, name, username, password } = payload
+        let { id, name, username, password, telp } = payload
         const checkUser: any = await this.query.findById(id)
         if (checkUser.err) {
             return this.wrapper.error('User Not Found')
         }
-        const checkUsername: any = await this.query.findOneUser({username: username.toLowerCase()})
+        
+        const checkUsername: any = await this.query.findOnePetugas({username: username.toLowerCase()})
+        // console.log(checkUsername.data);
+        
         if (checkUsername.data.username !== checkUser.data.username && username !== checkUser.username) {
             return this.wrapper.error('Username Already Registered')
         }
@@ -72,6 +75,7 @@ export class CommandWorker implements ICommandWorker{
             name,
             username: username.toLowerCase(),
             password: checkUser.data.password,
+            telp,
             updatedAt: new Date(Date.now())
         }
         const compare = this.bcrypt.compareSync(password, checkUser.data.password)
@@ -83,28 +87,5 @@ export class CommandWorker implements ICommandWorker{
             return this.wrapper.error('Fail Update Data')
         }
         return this.wrapper.data(result.data)
-    }
-
-    async loginUser(payload: any) {
-        const { username, password } =payload
-        const result: any = await this.query.findOneUser({username})
-        if (result.err) {
-            return this.wrapper.error('User Not Found')
-        }
-        const data = result.data
-        // data.accessRole = data.role
-        const compare = this.bcrypt.compareSync(password, data.password)
-        if (compare==false) {
-            return this.wrapper.error("Username And Password Not Match")
-        }
-        const accessToken= await generate(data, expiredToken.accessToken)
-        const token = {
-            name: data.name,
-            username: data.username,
-            accessToken,
-            accessRole: data.role,
-            expired: expiredToken.accessToken
-        }
-        return this.wrapper.data(token)
     }
 }
