@@ -51,8 +51,6 @@ export class QueryWorker implements IQueryWorker{
             params.push({$match: $match})
         }
         params.push({$sort: {updatedAt: -1}})
-
-        console.log(params);
         
         const meta: any= await this.query.findMeta({ paramData: $match, limit, page })
         page = (page < 1 ? meta.totalPage : meta.totalPage < page ? 1 : page);    
