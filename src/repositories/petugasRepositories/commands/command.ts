@@ -1,9 +1,9 @@
 import {QueryProxy}from '../../../utils/database/mongodb/queryProxy'
 import { ObjectId } from "mongodb";
 export default interface IQuery {
-    insertOne(data: any): any
-    deleteOne(data: any): any
-    updateOne(id:any, data: any): any
+    insertOne(data: object): object
+    deleteOne(data: string): object
+    updateOne(id:string, data: object): object
 }
 export class Command implements IQuery {
     db: QueryProxy
@@ -11,14 +11,14 @@ export class Command implements IQuery {
         this.db = new QueryProxy()
     }
 
-    async insertOne(data: any) {
-        this.db.setCollection('users')
+    async insertOne(data: object) {
+        this.db.setCollection('user')
         const result = await this.db.insertOne(data)
         return result
     }
 
-    async deleteOne(data: any) {
-        this.db.setCollection('users')
+    async deleteOne(data: string) {
+        this.db.setCollection('user')
         const param = {
            _id: new ObjectId(data)
         }
@@ -26,8 +26,8 @@ export class Command implements IQuery {
         return result
     }
 
-    async updateOne(id: any,data: any) {
-        this.db.setCollection('users')
+    async updateOne(id: string, data: object) {
+        this.db.setCollection('user')
         const param = {
            _id: new ObjectId(id)
         }

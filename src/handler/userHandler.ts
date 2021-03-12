@@ -27,7 +27,7 @@ export default class UserHandler implements IHandler{
     }
 
     private registerUser = async(req: Request, res: Response)=>{
-        const payload = req.body
+        const payload: any = req.body
         const postRequest = async()=>{
             return this.command.registerUser(payload)
         }

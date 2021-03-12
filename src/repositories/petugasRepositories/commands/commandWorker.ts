@@ -1,12 +1,12 @@
 import { Wrapper } from '../../../utils/helpers/wrapper';
 import { Command } from './command';
 import { Query } from '../queries/query';
-import { generate } from "../../../utils/auth/jwtAuth";
-import { expiredToken } from "../utils/constans";
 import bcryptjs from "bcryptjs";
 
 export default interface ICommandWorker{
-    registerPetugas(payload: any): any
+    registerPetugas(payload: { name: string, username: string, password: string, telp: string, accessRole: string} ): object
+    deletePetugas(payload: {id: string, accessRole: string} ): object
+    updateOne(payload: { id: string, name: string, username: string, password: string, telp: string, accessRole: string} ): object
 }
 
 export class CommandWorker implements ICommandWorker{
@@ -20,8 +20,11 @@ export class CommandWorker implements ICommandWorker{
         this.wrapper = new Wrapper()
     }
 
-    async registerPetugas(payload: any) {
-        let { name, username, password, telp }= payload
+    async registerPetugas(payload: { name: string, username: string, password: string, telp: string, accessRole: string}) {
+        let { name, username, password, telp, accessRole }= payload
+        if (accessRole !== 'Admin') {
+            return this.wrapper.error(`This Role Can't Register Petugas`)
+        }
         const checkUser: any = await this.query.findOnePetugas({username})
         if (checkUser.data) {
             return this.wrapper.error('Username Already Registered')
@@ -43,20 +46,26 @@ export class CommandWorker implements ICommandWorker{
         return this.wrapper.data(data)
     }
 
-    async deleteUser(payload: any){
-        const checkUser: any = await this.query.findById(payload)
+    async deletePetugas(payload: { id: string, accessRole: string}){
+        if (payload.accessRole !== 'Admin') {
+            return this.wrapper.error(`This Role Can't Access this Service`)
+        }
+        const checkUser: any = await this.query.findById(payload.id)
         if (checkUser.err) {
             return this.wrapper.error('User Not Found')
         }
-        const result: any = await this.command.deleteOne(payload)
+        const result: any = await this.command.deleteOne(payload.id)
         if (result.err) {
             return this.wrapper.error('fail delete user')
         }
         return this.wrapper.data(result.data)
     }
 
-    async updateOne(payload: any){
+    async updateOne(payload: { id: string, name: string, username: string, password: string, telp: string, accessRole: string}){
         let { id, name, username, password, telp } = payload
+        if (payload.accessRole !== 'Admin') {
+            return this.wrapper.error(`This Role Can't Access this Service`)
+        }
         const checkUser: any = await this.query.findById(id)
         if (checkUser.err) {
             return this.wrapper.error('User Not Found')
@@ -78,27 +87,4 @@ export class CommandWorker implements ICommandWorker{
         }
         return this.wrapper.data(result.data)
     }
-
-    // async loginPetugas(payload: any) {
-    //     const { username, password } =payload
-    //     const result: any = await this.query.findOnePetugas({username})
-    //     if (result.err) {
-    //         return this.wrapper.error('User Not Found')
-    //     }
-    //     const data = result.data
-    //     // data.accessRole = data.level
-        
-    //     const compare = this.bcrypt.compareSync(password, data.password)
-    //     if (compare==false) {
-    //         return this.wrapper.error("Username And Password Not Match")
-    //     }
-    //     const accessToken= await generate(data, expiredToken.accessToken)
-    //     const token = {
-    //         name: data.name,
-    //         username: data.username,
-    //         accessToken,
-    //         expired: expiredToken.accessToken,
-    //     }
-    //     return this.wrapper.data(token)
-    // }
 }

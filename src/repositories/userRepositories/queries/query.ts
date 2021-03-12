@@ -1,9 +1,10 @@
 import { QueryProxy } from '../../../utils/database/mongodb/queryProxy';
 import { ObjectId } from "mongodb";
 export default interface IQuery{
-    findOneUser(payload: any): any
-    // findMeta(payload: any):any
-    // getOneUserByUsername(param: any): any
+    findOneUser(payload: object): object
+    findById(param: string): object
+    findMeta(payload: object):object
+    findAggregate(payload: any[]):object
 }
 
 export class Query implements IQuery {
@@ -12,14 +13,14 @@ export class Query implements IQuery {
         this.db = new QueryProxy()
     }
     
-    async findOneUser(param: any){
-        this.db.setCollection('users')
+    async findOneUser(param: object){
+        this.db.setCollection('user')
         const result = await this.db.findOne(param)
         return result
     }
 
-    async findById(data: any){
-        this.db.setCollection('users')
+    async findById(data: string){
+        this.db.setCollection('user')
         const param = {
             _id: new ObjectId(data)
         }
@@ -28,7 +29,7 @@ export class Query implements IQuery {
     }
 
     async findMeta(param: any){
-        this.db.setCollection('users')
+        this.db.setCollection('user')
         const{ paramData, page, limit } = param
         const result: any = await this.db.count(paramData)
         const meta = {
@@ -40,8 +41,8 @@ export class Query implements IQuery {
         return meta
     }
 
-    async findAggregate(param: any){
-        this.db.setCollection('users')
+    async findAggregate(param: any[]){
+        this.db.setCollection('user')
         const result = await this.db.aggregate(param)
         return result
     }

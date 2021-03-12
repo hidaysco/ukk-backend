@@ -1,3 +1,5 @@
+import { promises as fs } from "fs";
+
 export interface IWrapper{
     data(data:any):any
     error(data:any):any
@@ -8,6 +10,7 @@ export interface IWrapper{
         size: Number
     }):any
     response(res: any, type: any, result: any, message: String, code: Number):any
+    downloadResponse(res: any, type: any, result: any, message: String, code: Number):any
     paginationResponse(res: any, type: any, result: any,message: String, code: Number):any
 }
 
@@ -37,6 +40,10 @@ export class Wrapper implements IWrapper {
             message,
             code
         })
+    }
+    downloadResponse = (res: any, type: any, result: any, message: String, code: Number)=>{
+        let data= result.data;
+        res.download(data)
     }
     paginationResponse = (res: any, type: any, result: any, message: String, code: Number)=>{
         let status = true;

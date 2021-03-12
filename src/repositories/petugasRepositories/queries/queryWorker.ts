@@ -2,7 +2,7 @@ import { Wrapper } from '../../../utils/helpers/wrapper';
 import { Query } from './query';
 
 export default interface IQueryWorker{
-    getPetugasPagination(payload: any): any
+    getPetugasPagination(payload: any): object
 }
 
 export class QueryWorker implements IQueryWorker{
@@ -14,9 +14,9 @@ export class QueryWorker implements IQueryWorker{
     }
     
     async getPetugasPagination(payload: any) {
-        let { page, limit, search } =payload
-        page = (!page) ? 1 : parseInt(page);
-        limit = (!limit) ? 10 : parseInt(limit);
+        let { page, limit, search } = payload
+        page = (!page) ? 1 : Number(page);
+        limit = (!limit) ? 10 : Number(limit);
         const params: any[] = []
         const searchData = new RegExp(search, 'i');
         const searchUsername = new RegExp(search, 'i');

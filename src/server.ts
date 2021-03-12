@@ -1,8 +1,9 @@
 import express from 'express';
 import { IHandler } from './shared/IHandler';
 import UserHandler from './handler/userHandler';
-import PetugasHandler from './handler/petugasHandler'
-import AdminHandler from './handler/adminHandler'
+import PetugasHandler from './handler/petugasHandler';
+import AdminHandler from './handler/adminHandler';
+import PengaduanHandler from './handler/pengaduanHandler';
 import { MongoConnection } from './utils/database/mongodb/connection';
 import bodyParser from "body-parser";
 import cors from "cors";
@@ -39,7 +40,8 @@ class App {
 const app = new App([
     new UserHandler(),
     new PetugasHandler(),
-    new AdminHandler()
+    new AdminHandler(),
+    new PengaduanHandler()
 ])
 
 app.defaultApps.listen(process.env.PORT||5000,()=>{
