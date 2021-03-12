@@ -19,8 +19,8 @@ export default class PetugasHandler implements IHandler{
     }
 
     private initRouter(){
-        this.router.post(`${this.path}/register`, this.registerPetugas)
-        this.router.delete(`${this.path}/delete/:id`, this.deleteOne)
+        this.router.post(`${this.path}/register`,auth, this.registerPetugas)
+        this.router.delete(`${this.path}/delete/:id`,auth, this.deleteOne)
         this.router.put(`${this.path}/update/:id`, auth, this.updatePetugas)
         this.router.get(`${this.path}/`, auth, this.getPagination)
     }

@@ -4,7 +4,6 @@ import { Query } from '../queries/query';
 import bcryptjs from "bcryptjs";
 
 export default interface ICommandWorker{
-    // registerPetugas(payload: any): any
 }
 
 export class CommandWorker implements ICommandWorker{

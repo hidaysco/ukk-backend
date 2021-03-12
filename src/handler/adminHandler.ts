@@ -19,15 +19,11 @@ export default class AdminHandler implements IHandler{
     }
 
     private initRouter(){
-        this.router.get(`${this.path}/dashboard`, this.dashboard)
+        this.router.get(`${this.path}/dashboard`,auth, this.dashboard)
     }
 
     private dashboard = async(req: Request, res: Response)=>{
         const payload = req.query
-        
-        // console.log(payload);
-        
-        // payload.accessRole = req.user.role
         
         const postRequest = async()=>{
             return this.query.getPetugasPagination({payload})
