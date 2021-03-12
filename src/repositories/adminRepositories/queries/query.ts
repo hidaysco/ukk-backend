@@ -21,14 +21,6 @@ export class Query implements IQuery {
         return result
     }
 
-    // async checkLevel (param:any) {
-    //     var level = ['petugas']
-    //     var checkLevel = new Set(level)
-    //     const result =  checkLevel.has(param.level)
-    //     // console.log(param);
-    //     return result
-    // }
-
     async findById(data: any){
         this.db.setCollection('users')
         const param = {

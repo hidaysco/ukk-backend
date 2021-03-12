@@ -34,7 +34,7 @@ export class QueryWorker implements IQueryWorker{
                     { username: searchUsername }
                 ]
             },
-            {role : 'petugas' }]
+            {accessRole : 'petugas' }]
         }
         params.push({$match: $match})
         params.push({$sort: {cratedAt: -1}})

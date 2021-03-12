@@ -26,19 +26,14 @@ export class CommandWorker implements ICommandWorker{
         if (checkUser.data) {
             return this.wrapper.error('Username Already Registered')
         }
-        // const checkLevel : any = await this.query.checkLevel({level})
-        // console.log(checkLevel);
-        
-        // if (checkLevel == false) {
-        //     return this.wrapper.error('Level Doesnt Exist')
-        // }
+
         password = this.bcrypt.hashSync(payload.password, this.bcrypt.genSaltSync(10))
         const data = {
             name,
             username,
             password,
             telp,
-            role: 'petugas',
+            accessRole: 'petugas',
             createdAt: new Date(Date.now())
         }
         const result: any = await this.command.insertOne(data)
@@ -66,10 +61,10 @@ export class CommandWorker implements ICommandWorker{
         if (checkUser.err) {
             return this.wrapper.error('User Not Found')
         }
-        const checkUsername: any = await this.query.findOnePetugas({username: username.toLowerCase()})
-        if (checkUsername.data.username !== checkUser.data.username && username !== checkUser.username) {
-            return this.wrapper.error('Username Already Registered')
-        }
+        // const checkUsername: any = await this.query.findOnePetugas({username: username.toLowerCase()})
+        // if (checkUsername.data.username !== checkUser.data.username && username !== checkUser.username) {
+        //     return this.wrapper.error('Username Already Registered')
+        // }
         const data = {
             name,
             username: username.toLowerCase(),
