@@ -2,7 +2,8 @@ import { Wrapper } from '../../../utils/helpers/wrapper';
 import { Query } from './query';
 
 export default interface IQueryWorker{
-    getPetugasPagination(payload: any): any
+    getPetugasPagination(payload: any): any,
+    getDashboard(payload: any): any
 }
 
 export class QueryWorker implements IQueryWorker{
@@ -13,6 +14,12 @@ export class QueryWorker implements IQueryWorker{
         this.wrapper = new Wrapper()
     }
     
+    async getDashboard(payload: any) {
+        const meta: any= await this.query.findMetaDashboard({})
+        
+        return this.wrapper.data(meta)
+    }
+
     async getPetugasPagination(payload: any) {
         let { page, limit, search } =payload
         page = (!page) ? 1 : parseInt(page);

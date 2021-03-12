@@ -36,6 +36,7 @@ export class CommandWorker implements ICommandWorker{
             name,
             username,
             password,
+            role: 'User',
             createdAt: new Date(Date.now())
         }
         const result: any = await this.command.insertOne(data)
@@ -91,7 +92,7 @@ export class CommandWorker implements ICommandWorker{
             return this.wrapper.error('User Not Found')
         }
         const data = result.data
-        data.accessRole = "User"
+        // data.accessRole = data.role
         const compare = this.bcrypt.compareSync(password, data.password)
         if (compare==false) {
             return this.wrapper.error("Username And Password Not Match")
@@ -101,6 +102,7 @@ export class CommandWorker implements ICommandWorker{
             name: data.name,
             username: data.username,
             accessToken,
+            accessRole: data.role,
             expired: expiredToken.accessToken
         }
         return this.wrapper.data(token)

@@ -2,6 +2,9 @@ import { QueryProxy } from '../../../utils/database/mongodb/queryProxy';
 import { ObjectId } from "mongodb";
 export default interface IQuery{
     findOnePetugas(payload: any): any
+    // checkLevel(payload :any):any
+    // findMeta(payload: any):any
+    // getOneUserByUsername(param: any): any
 }
 
 export class Query implements IQuery {
@@ -27,6 +30,18 @@ export class Query implements IQuery {
         return result
     }
 
+    async findMetaDashboard(param: any){
+        this.db.setCollection('users')
+        const petugas: any = await this.db.count({role:'petugas'})
+        const user: any = await this.db.count({role:'user'})
+
+        const meta = {
+            totalPetugas: petugas.data,
+            totalUser: user.data,
+        }
+        return meta
+    }
+
     async findMeta(param: any){
         this.db.setCollection('users')
         const{ paramData, page, limit } = param
@@ -43,6 +58,7 @@ export class Query implements IQuery {
     async findAggregate(param: any){
         this.db.setCollection('users')
         const result = await this.db.aggregate(param)
+        // console.log(param);
         
         return result
     }
