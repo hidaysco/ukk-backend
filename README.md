@@ -8,6 +8,7 @@ A step by step series of examples that tell you have to get a development env ru
 ```
 Give the example
 ...
+$ npm i
 $ npm run build
 $ npm start
 ```
