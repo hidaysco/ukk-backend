@@ -33,7 +33,7 @@ export class CommandWorker implements ICommandWorker{
             username,
             password,
             telp,
-            accessRole: 'petugas',
+            accessRole: 'Petugas',
             createdAt: new Date(Date.now())
         }
         const result: any = await this.command.insertOne(data)
@@ -61,10 +61,6 @@ export class CommandWorker implements ICommandWorker{
         if (checkUser.err) {
             return this.wrapper.error('User Not Found')
         }
-        // const checkUsername: any = await this.query.findOnePetugas({username: username.toLowerCase()})
-        // if (checkUsername.data.username !== checkUser.data.username && username !== checkUser.username) {
-        //     return this.wrapper.error('Username Already Registered')
-        // }
         const data = {
             name,
             username: username.toLowerCase(),

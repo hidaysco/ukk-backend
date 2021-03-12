@@ -36,7 +36,7 @@ export class CommandWorker implements ICommandWorker{
             name,
             username,
             password,
-            role: 'user',
+            role: 'User',
             createdAt: new Date(Date.now())
         }
         const result: any = await this.command.insertOne(data)

@@ -12,13 +12,13 @@ export class Command implements IQuery {
     }
 
     async insertOne(data: any) {
-        this.db.collectionName = 'users'
+        this.db.setCollection('users')
         const result = await this.db.insertOne(data)
         return result
     }
 
     async deleteOne(data: any) {
-        this.db.collectionName = 'users'
+        this.db.setCollection('users')
         const param = {
            _id: new ObjectId(data)
         }
@@ -27,7 +27,7 @@ export class Command implements IQuery {
     }
 
     async updateOne(id: any,data: any) {
-        this.db.collectionName = 'users'
+        this.db.setCollection('users')
         const param = {
            _id: new ObjectId(id)
         }

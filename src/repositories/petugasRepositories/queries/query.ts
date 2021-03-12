@@ -2,9 +2,6 @@ import { QueryProxy } from '../../../utils/database/mongodb/queryProxy';
 import { ObjectId } from "mongodb";
 export default interface IQuery{
     findOnePetugas(payload: any): any
-    // checkLevel(payload :any):any
-    // findMeta(payload: any):any
-    // getOneUserByUsername(param: any): any
 }
 
 export class Query implements IQuery {
@@ -20,14 +17,6 @@ export class Query implements IQuery {
         
         return result
     }
-
-    // async checkLevel (param:any) {
-    //     var level = ['petugas']
-    //     var checkLevel = new Set(level)
-    //     const result =  checkLevel.has(param.level)
-    //     // console.log(param);
-    //     return result
-    // }
 
     async findById(data: any){
         this.db.setCollection('users')
@@ -54,7 +43,6 @@ export class Query implements IQuery {
     async findAggregate(param: any){
         this.db.setCollection('users')
         const result = await this.db.aggregate(param)
-        // console.log(param);
         
         return result
     }
