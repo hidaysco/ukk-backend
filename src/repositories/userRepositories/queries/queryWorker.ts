@@ -26,7 +26,8 @@ export class QueryWorker implements IQueryWorker{
                     { name: searchData },
                     { nik: searchNik }
                 ]
-            }]
+            },
+            {accessRole: 'User'}]
         }
         params.push({$match: $match})
         params.push({$sort: {cratedAt: -1}})

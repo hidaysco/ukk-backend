@@ -27,20 +27,25 @@ export default class PetugasHandler implements IHandler{
 
     private registerPetugas = async(req: Request, res: Response)=>{
         const payload = req.body
+        payload.user = req.user.accessRole
         const postRequest = async()=>{
             return this.command.registerPetugas(payload)
         }
         const response = (result: { err: any })=>{
-            (result.err) ? this.wrapper.response(res, 'fail', result, `Failed Create Data ${payload.level}`, 400)
-            : this.wrapper.response(res, 'success', result, `Success Create Data ${payload.level}`, 201);
+            (result.err) ? this.wrapper.response(res, 'fail', result, `Failed Create Data Petugas`, 400)
+            : this.wrapper.response(res, 'success', result, `Success Create Data Petugas`, 201);
         }
         response(await postRequest())
     }
 
     private deleteOne = async(req: Request, res: Response)=>{
-        const payload = req.params.id
+        const payload = {
+            id: req.params.id,
+            accessRole: req.user.accessRole
+        }
+
         const postRequest = async()=>{
-            return this.command.deleteUser(payload)
+            return this.command.deletePetugas(payload)
         }
         const response = (result: { err: any })=>{
             (result.err) ? this.wrapper.response(res, 'fail', result, 'Failed Delete Data User', 400)
@@ -52,6 +57,7 @@ export default class PetugasHandler implements IHandler{
     private updatePetugas = async(req: Request, res: Response)=>{
         const payload = req.body
         payload.id = req.params.id
+        payload.accessRole = req.user.accessRole
         
         const postRequest = async()=>{
             return this.command.updateOne(payload)
@@ -65,7 +71,6 @@ export default class PetugasHandler implements IHandler{
 
     private getPagination = async(req: Request, res: Response)=>{
         const payload = req.query
-        payload.accessRole = req.user.accessRole
         
         const postRequest = async()=>{
             return this.query.getPetugasPagination(payload)

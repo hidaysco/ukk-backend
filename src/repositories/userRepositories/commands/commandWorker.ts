@@ -6,7 +6,10 @@ import { expiredToken } from "../utils/constans";
 import bcryptjs from "bcryptjs";
 
 export default interface ICommandWorker{
-    registerUser(payload: any): any
+    registerUser(payload: { name:string, username: string, nik: Float32Array, password: string }): object
+    deleteUser(payload: string): object
+    updateOne(payload: { id: string, name:string, username: string, password: string }): object
+    loginUser(payload: { username: string, password: string }): object
 }
 
 export class CommandWorker implements ICommandWorker{
@@ -20,7 +23,7 @@ export class CommandWorker implements ICommandWorker{
         this.wrapper = new Wrapper()
     }
 
-    async registerUser(payload: any) {
+    async registerUser(payload: { name:string, username: string, nik: Float32Array, password: string }) {
         let { nik, name, username, password }= payload
         const checkNIK: any = await this.query.findOneUser({nik})
         if (checkNIK.data) {
@@ -36,7 +39,7 @@ export class CommandWorker implements ICommandWorker{
             name,
             username,
             password,
-            role: 'User',
+            accessRole: 'User',
             createdAt: new Date(Date.now())
         }
         const result: any = await this.command.insertOne(data)
@@ -46,7 +49,7 @@ export class CommandWorker implements ICommandWorker{
         return this.wrapper.data(data)
     }
 
-    async deleteUser(payload: any){
+    async deleteUser(payload: string){
         const checkUser: any = await this.query.findById(payload)
         if (checkUser.err) {
             return this.wrapper.error('User Not Found')
@@ -58,14 +61,14 @@ export class CommandWorker implements ICommandWorker{
         return this.wrapper.data(result.data)
     }
 
-    async updateOne(payload: any){
+    async updateOne(payload: { id: string, name:string, username: string, password: string }){
         let { id, name, username, password } = payload
         const checkUser: any = await this.query.findById(id)
         if (checkUser.err) {
             return this.wrapper.error('User Not Found')
         }
         const checkUsername: any = await this.query.findOneUser({username: username.toLowerCase()})
-        if (checkUsername.data.username !== checkUser.data.username && username !== checkUser.username) {
+        if (checkUsername.data && checkUser.data.username !== username) {
             return this.wrapper.error('Username Already Registered')
         }
         const data = {
@@ -85,14 +88,13 @@ export class CommandWorker implements ICommandWorker{
         return this.wrapper.data(result.data)
     }
 
-    async loginUser(payload: any) {
+    async loginUser(payload: { username: string, password: string }) {
         const { username, password } =payload
         const result: any = await this.query.findOneUser({username})
         if (result.err) {
             return this.wrapper.error('User Not Found')
         }
         const data = result.data
-        // data.accessRole = data.role
         const compare = this.bcrypt.compareSync(password, data.password)
         if (compare==false) {
             return this.wrapper.error("Username And Password Not Match")
@@ -102,7 +104,7 @@ export class CommandWorker implements ICommandWorker{
             name: data.name,
             username: data.username,
             accessToken,
-            accessRole: data.role,
+            accessRole: data.accessRole,
             expired: expiredToken.accessToken
         }
         return this.wrapper.data(token)
