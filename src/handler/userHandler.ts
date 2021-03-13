@@ -20,8 +20,8 @@ export default class UserHandler implements IHandler{
 
     private initRouter(){
         this.router.post(`${this.path}/register`, this.registerUser)
-        this.router.delete(`${this.path}/delete/:id`, this.deleteOne)
-        this.router.put(`${this.path}/update/`, auth, this.updateOne)
+        this.router.delete(`${this.path}/:id`, this.deleteOne)
+        this.router.put(`${this.path}/update`, auth, this.updateOne)
         this.router.get(`${this.path}/`, auth, this.getPagination)
         this.router.post(`${this.path}/login`, this.loginUser)
     }
