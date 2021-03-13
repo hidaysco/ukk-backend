@@ -27,7 +27,7 @@ export default class PetugasHandler implements IHandler{
 
     private registerPetugas = async(req: Request, res: Response)=>{
         const payload = req.body
-        payload.user = req.user.accessRole
+        payload.accessRole = req.user.accessRole
         const postRequest = async()=>{
             return this.command.registerPetugas(payload)
         }

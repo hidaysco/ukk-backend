@@ -4,6 +4,7 @@ import UserHandler from './handler/userHandler';
 import PetugasHandler from './handler/petugasHandler';
 import AdminHandler from './handler/adminHandler';
 import PengaduanHandler from './handler/pengaduanHandler';
+import DashboardHandler from './handler/dashboardHandler';
 import { MongoConnection } from './utils/database/mongodb/connection';
 import bodyParser from "body-parser";
 import cors from "cors";
@@ -41,7 +42,8 @@ const app = new App([
     new UserHandler(),
     new PetugasHandler(),
     new AdminHandler(),
-    new PengaduanHandler()
+    new PengaduanHandler(),
+    new DashboardHandler()
 ])
 
 app.defaultApps.listen(process.env.PORT||5000,()=>{
