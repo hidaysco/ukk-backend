@@ -2,9 +2,9 @@ import { QueryProxy } from '../../../utils/database/mongodb/queryProxy';
 import { ObjectId } from "mongodb";
 export default interface IQuery{
     findOnePengaduan(payload: any): any
-    findById(payload: any):any
+    findById(payload: string):any
     findMeta(payload: any): any
-    findAggregate(payload: any): any
+    findAggregate(payload: any[]): any
 }
 
 export class Query implements IQuery {
@@ -19,7 +19,7 @@ export class Query implements IQuery {
         return result
     }
 
-    async findById(data: any){
+    async findById(data: string){
         this.db.setCollection('pengaduan')
         const param = {
             _id: new ObjectId(data)
@@ -41,7 +41,7 @@ export class Query implements IQuery {
         return meta
     }
 
-    async findAggregate(param: any){
+    async findAggregate(param: any[]){
         this.db.setCollection('pengaduan')
         const result = await this.db.aggregate(param)
         return result

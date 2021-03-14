@@ -4,9 +4,9 @@ import { Query } from '../queries/query';
 import bcryptjs from "bcryptjs";
 
 export default interface ICommandWorker{
-    registerPetugas(payload: { name: string, username: string, password: string, telp: string, accessRole: string} ): object
-    deletePetugas(payload: {id: string, accessRole: string} ): object
-    updateOne(payload: { id: string, name: string, username: string, password: string, telp: string, accessRole: string} ): object
+    registerPetugas(payload: { name: string, username: string, password: string, telp: string, accessRole: string} ): any
+    deletePetugas(payload: {id: string, accessRole: string} ): any
+    updateOne(payload: { id: string, name: string, username: string, password: string, telp: string, accessRole: string} ): any
 }
 
 export class CommandWorker implements ICommandWorker{

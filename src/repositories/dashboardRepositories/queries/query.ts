@@ -1,5 +1,4 @@
 import { QueryProxy } from '../../../utils/database/mongodb/queryProxy';
-import { ObjectId } from "mongodb";
 export default interface IQuery{
     countAkun(payload: any): any
     countPengaduan(payload: any): any

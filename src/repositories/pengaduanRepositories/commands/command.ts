@@ -3,7 +3,7 @@ import { ObjectId } from "mongodb";
 
 export default interface IQuery {
     insertOne(data: any): any
-    updateOne(id:any, data: any): any
+    updateOne(id:string, data: any): any
 }
 export class Command implements IQuery {
     db: QueryProxy
@@ -17,7 +17,7 @@ export class Command implements IQuery {
         return result
     }
 
-    async updateOne(id: any,data: any) {
+    async updateOne(id: string,data: any) {
         this.db.setCollection('pengaduan')
         const param = {
            _id: new ObjectId(id)

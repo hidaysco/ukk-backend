@@ -1,7 +1,6 @@
 import {QueryProxy}from '../../../utils/database/mongodb/queryProxy'
-import { ObjectId } from "mongodb";
 export default interface IQuery {
-    insertOne(data: object): object
+    insertOne(data: any): any
 }
 export class Command implements IQuery {
     db: QueryProxy
@@ -9,7 +8,7 @@ export class Command implements IQuery {
         this.db = new QueryProxy()
     }
 
-    async insertOne(data: object) {
+    async insertOne(data: any) {
         this.db.setCollection('user')
         const result = await this.db.insertOne(data)
         return result

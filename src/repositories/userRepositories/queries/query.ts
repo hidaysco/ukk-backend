@@ -1,10 +1,10 @@
 import { QueryProxy } from '../../../utils/database/mongodb/queryProxy';
 import { ObjectId } from "mongodb";
 export default interface IQuery{
-    findOneUser(payload: object): object
-    findById(param: string): object
-    findMeta(payload: object):object
-    findAggregate(payload: any[]):object
+    findOneUser(payload: any): any
+    findById(param: string): any
+    findMeta(payload: any): any
+    findAggregate(payload: any[]): any
 }
 
 export class Query implements IQuery {
@@ -13,7 +13,7 @@ export class Query implements IQuery {
         this.db = new QueryProxy()
     }
     
-    async findOneUser(param: object){
+    async findOneUser(param: any){
         this.db.setCollection('user')
         const result = await this.db.findOne(param)
         return result

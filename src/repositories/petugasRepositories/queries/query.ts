@@ -1,10 +1,10 @@
 import { QueryProxy } from '../../../utils/database/mongodb/queryProxy';
 import { ObjectId } from "mongodb";
 export default interface IQuery{
-    findOnePetugas(payload: object): object
-    findById(data: string): object
-    findMeta(param: object): object
-    findAggregate(param: any[]):object
+    findOnePetugas(payload: any): void
+    findById(data: string): void
+    findMeta(param: any): void
+    findAggregate(param: any[]):void
 }
 
 export class Query implements IQuery {
