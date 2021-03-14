@@ -14,15 +14,18 @@ export class QueryWorker implements IQueryWorker{
     }
     
     async getDashboard(payload: any) {
-        const akun: any= await this.query.countAkun({})
-        const pengaduan: any= await this.query.countPengaduan({})
+        const petugas: any= await this.query.countAkun({accessRole:'Petugas'})
+        const user: any= await this.query.countAkun({accessRole:'User'})
+        const pengaduan: any= await this.query.countPengaduan({status:'Pending'})
+        const approved: any= await this.query.countPengaduan({status:'Approved'})
+        const rejected: any= await this.query.countPengaduan({status:'Rejected'})
         
         const result = {
-            totalPengaduan: pengaduan.totalPengaduan,
-            totalApproved: pengaduan.totalApproved,
-            totalRejected: pengaduan.totalRejected,
-            totalPetugas: akun.totalPetugas,
-            totalUser: akun.totalUser
+            totalPengaduan: pengaduan.data,
+            totalApproved: approved.data,
+            totalRejected: rejected.data,
+            totalPetugas: petugas.data,
+            totalUser: user.data
         }
         
         return this.wrapper.data(result)

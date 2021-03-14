@@ -14,26 +14,13 @@ export class Query implements IQuery {
     async countPengaduan(param:any){
         this.db.setCollection('pengaduan')
 
-        const pending:any = await this.db.count({status:'Pending'})
-        const approved:any = await this.db.count({status:'Approved'})
-        const rejected:any = await this.db.count({status:'Rejected'})
-
-        const meta = {
-            totalPengaduan: pending.data,
-            totalApproved: approved.data,
-            totalRejected: rejected.data
-        }
-        return meta
+        const result:any = await this.db.count(param)
+        return result
     }
     async countAkun(param: any){
         this.db.setCollection('user')
-        const petugas: any = await this.db.count({accessRole:'Petugas'})
-        const user: any = await this.db.count({accessRole:'User'})
-
-        const meta = {
-            totalPetugas: petugas.data,
-            totalUser: user.data
-        }
-        return meta
+        
+        const result: any = await this.db.count(param)
+        return result
     }
 }
