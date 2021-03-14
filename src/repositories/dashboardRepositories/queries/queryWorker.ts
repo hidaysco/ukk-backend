@@ -14,9 +14,18 @@ export class QueryWorker implements IQueryWorker{
     }
     
     async getDashboard(payload: any) {
-        const meta: any= await this.query.findMetaDashboard({})
+        const akun: any= await this.query.countAkun({})
+        const pengaduan: any= await this.query.countPengaduan({})
         
-        return this.wrapper.data(meta)
+        const result = {
+            totalPengaduan: pengaduan.totalPengaduan,
+            totalApproved: pengaduan.totalApproved,
+            totalRejected: pengaduan.totalRejected,
+            totalPetugas: akun.totalPetugas,
+            totalUser: akun.totalUser
+        }
+        
+        return this.wrapper.data(result)
     }
 
 }
