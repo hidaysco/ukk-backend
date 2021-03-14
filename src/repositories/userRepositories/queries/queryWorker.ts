@@ -2,7 +2,7 @@ import { Wrapper } from '../../../utils/helpers/wrapper';
 import { Query } from './query';
 
 export default interface IQueryWorker{
-    getUserPagination(payload: any): any
+    getUserPagination(payload: { page: number, limit: number, search: string }): any
 }
 
 export class QueryWorker implements IQueryWorker{
@@ -13,10 +13,10 @@ export class QueryWorker implements IQueryWorker{
         this.wrapper = new Wrapper()
     }
     
-    async getUserPagination(payload: any) {
-        let { page, limit, search } =payload
-        page = (!page) ? 1 : parseInt(page);
-        limit = (!limit) ? 10 : parseInt(limit);
+    async getUserPagination(payload: { page: number, limit: number, search: string }) {
+        let { page, limit, search } = payload
+        page = (!page) ? 1 : page;
+        limit = (!limit) ? 10 : limit;
         const params: any[] = []
         const searchData = new RegExp(search, 'i');
         const searchNik = parseFloat(search);

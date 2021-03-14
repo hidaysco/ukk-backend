@@ -4,12 +4,11 @@ import { Query } from '../queries/query';
 import { generate } from "../../../utils/auth/jwtAuth";
 import { expiredToken } from "../utils/constans";
 import bcryptjs from "bcryptjs";
-
 export default interface ICommandWorker{
-    registerUser(payload: { name:string, username: string, nik: Float32Array, password: string }): object
-    deleteUser(payload: string): object
-    updateOne(payload: { id: string, name:string, username: string, password: string }): object
-    loginUser(payload: { username: string, password: string }): object
+    registerUser(payload: { name:string, username: string, nik: number, password: string }): any
+    deleteUser(payload: string): any
+    updateOne(payload: { id: string, name:string, username: string, password: string }): any
+    loginUser(payload: { username: string, password: string }): any
 }
 
 export class CommandWorker implements ICommandWorker{
@@ -23,7 +22,7 @@ export class CommandWorker implements ICommandWorker{
         this.wrapper = new Wrapper()
     }
 
-    async registerUser(payload: { name:string, username: string, nik: Float32Array, password: string }) {
+    async registerUser(payload: { name:string, username: string, nik: number, password: string }) {
         let { nik, name, username, password }= payload
         const checkNIK: any = await this.query.findOneUser({nik})
         if (checkNIK.data) {

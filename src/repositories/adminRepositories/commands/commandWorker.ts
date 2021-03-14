@@ -4,7 +4,7 @@ import { Query } from '../queries/query';
 import bcryptjs from "bcryptjs";
 
 export default interface ICommandWorker{
-    registerAdmin(payload: { name: string, username: string, password: string }): object
+    registerAdmin(payload: { name: string, username: string, password: string }): any
 }
 
 export class CommandWorker implements ICommandWorker{

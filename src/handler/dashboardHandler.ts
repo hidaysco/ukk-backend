@@ -1,6 +1,5 @@
 import { Router, Request, Response } from 'express';
 import { IHandler } from '../shared/IHandler';
-import { CommandWorker } from '../repositories/dashboardRepositories/commands/commandWorker';
 import { QueryWorker } from '../repositories/dashboardRepositories/queries/queryWorker';
 import { Wrapper } from '../utils/helpers/wrapper';
 import { auth } from '../utils/auth/jwtAuth'
@@ -8,12 +7,10 @@ import { auth } from '../utils/auth/jwtAuth'
 export default class DashboardHandler implements IHandler{
     path = '/dashboard'
     router = Router()
-    command: CommandWorker
     query: QueryWorker
     wrapper: Wrapper
     constructor() {
         this.initRouter()
-        this.command = new CommandWorker()
         this.query = new QueryWorker()
         this.wrapper = new Wrapper()
     }
@@ -23,10 +20,8 @@ export default class DashboardHandler implements IHandler{
     }
 
     private dashboard = async(req: Request, res: Response)=>{
-        const payload = req.query
-        
         const postRequest = async()=>{
-            return this.query.getDashboard(payload)
+            return this.query.getDashboard()
         }
         const response = (result: { err: any })=>{
             (result.err) ? this.wrapper.response(res, 'fail', result, 'Failed Get Data User', 400)

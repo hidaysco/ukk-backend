@@ -2,7 +2,7 @@ import { Wrapper } from '../../../utils/helpers/wrapper';
 import { Query } from './query';
 
 export default interface IQueryWorker{
-    getDashboard(payload: any): any
+    getDashboard(): any
 }
 
 export class QueryWorker implements IQueryWorker{
@@ -13,7 +13,7 @@ export class QueryWorker implements IQueryWorker{
         this.wrapper = new Wrapper()
     }
     
-    async getDashboard(payload: any) {
+    async getDashboard() {
         const petugas: any= await this.query.countAkun({accessRole:'Petugas'})
         const user: any= await this.query.countAkun({accessRole:'User'})
         const pengaduan: any= await this.query.countPengaduan({status:'Pending'})
