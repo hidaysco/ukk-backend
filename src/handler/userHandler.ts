@@ -67,7 +67,7 @@ export default class UserHandler implements IHandler{
         const payload = {
             limit: Number(req.query.limit),
             page: Number(req.query.page),
-            search: String(req.query.search)
+            search: req.query.search
         }
         
         const postRequest = async()=>{

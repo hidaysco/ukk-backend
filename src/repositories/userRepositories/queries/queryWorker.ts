@@ -2,7 +2,7 @@ import { Wrapper } from '../../../utils/helpers/wrapper';
 import { Query } from './query';
 
 export default interface IQueryWorker{
-    getUserPagination(payload: { page: number, limit: number, search: string }): any
+    getUserPagination(payload: { page: number, limit: number, search: any }): any
 }
 
 export class QueryWorker implements IQueryWorker{
@@ -13,7 +13,7 @@ export class QueryWorker implements IQueryWorker{
         this.wrapper = new Wrapper()
     }
     
-    async getUserPagination(payload: { page: number, limit: number, search: string }) {
+    async getUserPagination(payload: { page: number, limit: number, search: any }) {
         let { page, limit, search } = payload
         page = (!page) ? 1 : page;
         limit = (!limit) ? 10 : limit;
