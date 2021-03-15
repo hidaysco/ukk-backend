@@ -3,7 +3,7 @@ import { Query } from './query';
 import XLSX from "xlsx";
 
 export default interface IQueryWorker{
-    getPengaduanPagination(payload: any): any
+    getPengaduanPagination(payload: { page: number, limit: number, search: string, status: string }): any
     getPengaduanById(payload: string): any
     downloadPengaduan(accessRole: string):any
 }
@@ -16,10 +16,10 @@ export class QueryWorker implements IQueryWorker{
         this.wrapper = new Wrapper()
     }
     
-    async getPengaduanPagination(payload: any) {
+    async getPengaduanPagination(payload: { page: number, limit: number, search: string , status: string }) {
         let { page, limit, search, status } = payload
-        page = (!page) ? 1 : parseInt(page);
-        limit = (!limit) ? 10 : parseInt(limit);
+        page = (!page) ? 1 : page;
+        limit = (!limit) ? 10 : limit;
         const params: any[] = []
         const searchData = new RegExp(search, 'i');
         let $match, $filter: any[] = []

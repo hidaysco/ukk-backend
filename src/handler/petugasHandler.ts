@@ -70,7 +70,11 @@ export default class PetugasHandler implements IHandler{
     }
 
     private getPagination = async(req: Request, res: Response)=>{
-        const payload = req.query
+        const payload = {
+            limit: Number(req.query.limit),
+            page: Number(req.query.page),
+            search: String(req.query.search)
+        }
         
         const postRequest = async()=>{
             return this.query.getPetugasPagination(payload)

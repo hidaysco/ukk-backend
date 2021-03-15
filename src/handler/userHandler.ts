@@ -64,8 +64,11 @@ export default class UserHandler implements IHandler{
     }
 
     private getPagination = async(req: Request, res: Response)=>{
-        const payload = req.query
-        payload.accessRole = req.user.accessRole
+        const payload = {
+            limit: Number(req.query.limit),
+            page: Number(req.query.page),
+            search: String(req.query.search)
+        }
         
         const postRequest = async()=>{
             return this.query.getUserPagination(payload)

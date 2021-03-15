@@ -42,8 +42,12 @@ export default class PengaduanHandler implements IHandler{
     }
 
     private getPengaduan = async(req: Request, res: Response)=>{
-        const payload = req.query
-        payload.user = req.user
+        const payload = {
+            limit: Number(req.query.limit),
+            page: Number(req.query.page),
+            search: String(req.query.search),
+            status: String(req.query.status)
+        }
         const postRequest = async()=>{
             return this.query.getPengaduanPagination(payload)
         }
