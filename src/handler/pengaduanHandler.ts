@@ -22,9 +22,9 @@ export default class PengaduanHandler implements IHandler{
     private initRouter(){
         this.router.post(`${this.path}/submit-pengaduan`, auth, upload.array('photos'), this.submitPengaduan)
         this.router.get(`${this.path}/`, auth, this.getPengaduan)
+        this.router.get(`${this.path}/download-pengaduan`, auth,  this.downloadPengaduan)
         this.router.get(`${this.path}/:id`, auth, this.getPengaduanById)
         this.router.put(`${this.path}/update-status/:id`, auth, this.updateStatus)
-        this.router.get(`${this.path}/download-pengaduan`, auth,  this.downloadPengaduan)
     }
 
     private submitPengaduan = async(req: Request, res: Response)=>{
@@ -45,7 +45,7 @@ export default class PengaduanHandler implements IHandler{
         const payload = {
             limit: Number(req.query.limit),
             page: Number(req.query.page),
-            search: String(req.query.search),
+            search: req.query.search,
             status: String(req.query.status)
         }
         const postRequest = async()=>{
