@@ -12,6 +12,14 @@ export class QueryWorker implements IQueryWorker{
         this.query = new Query()
         this.wrapper = new Wrapper()
     }
+
+    async getPetugasById(payload: string){
+        const result = await this.query.findById(payload)
+        if (result.err) {
+            retufindrn this.wrapper.error('Petugas Not Found')
+        }
+        return this.wrapper.data(result.data)
+    }
     
     async getPetugasPagination(payload: { page: number, limit: number, search: any }) {
         let { page, limit, search } = payload
