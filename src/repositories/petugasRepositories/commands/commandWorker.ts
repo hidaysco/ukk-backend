@@ -77,9 +77,11 @@ export class CommandWorker implements ICommandWorker{
             telp,
             updatedAt: new Date(Date.now())
         }
-        const compare = this.bcrypt.compareSync(password, checkUser.data.password)
-        if (compare === false) {
-            data.password = this.bcrypt.hashSync(payload.password, this.bcrypt.genSaltSync(10))
+        if (password) {
+            const compare = this.bcrypt.compareSync(password, checkUser.data.password)
+            if (compare === false) {
+                data.password = this.bcrypt.hashSync(payload.password, this.bcrypt.genSaltSync(10))
+            }
         }
         const result: any = await this.command.updateOne(id, {$set:{...data}})
         if (result.err) {

@@ -22,6 +22,7 @@ export default class PetugasHandler implements IHandler{
         this.router.post(`${this.path}/register`,auth, this.registerPetugas)
         this.router.delete(`${this.path}/:id`,auth, this.deleteOne)
         this.router.put(`${this.path}/:id`, auth, this.updatePetugas)
+        this.router.get(`${this.path}/:id`, auth, this.getPetugasById)
         this.router.get(`${this.path}/`, auth, this.getPagination)
     }
 
@@ -65,6 +66,18 @@ export default class PetugasHandler implements IHandler{
         const response = (result: { err: any })=>{
             (result.err) ? this.wrapper.response(res, 'fail', result, 'Failed Update Data User', 400)
             : this.wrapper.response(res, 'success', result, 'Success Update Data User', 200);
+        }
+        response(await postRequest())
+    }
+
+    private getPetugasById = async(req: Request, res: Response)=>{
+        const payload = req.params.id
+        const postRequest = async()=>{
+            return this.query.getPetugasById(payload)
+        }
+        const response = (result: { err: any })=>{
+            (result.err) ? this.wrapper.response(res, 'fail', result, `Failed Get Data`, 400)
+            : this.wrapper.response(res, 'success', result, `Success Get Data`, 200);
         }
         response(await postRequest())
     }
