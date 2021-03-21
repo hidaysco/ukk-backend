@@ -12,6 +12,12 @@ export class Query implements IQuery {
         this.db = new QueryProxy()
     }
 
+    async findOnePetugas(param: Object){
+        this.db.setCollection('user')
+        const result = await this.db.findOne(param)
+        return result
+    }
+    
     async findById(data: string){
         this.db.setCollection('user')
         const param = {
