@@ -16,7 +16,7 @@ export class QueryWorker implements IQueryWorker{
     async getPetugasById(payload: string){
         const result = await this.query.findById(payload)
         if (result.err) {
-            retufindrn this.wrapper.error('Petugas Not Found')
+            return this.wrapper.error('Petugas Not Found')
         }
         return this.wrapper.data(result.data)
     }
