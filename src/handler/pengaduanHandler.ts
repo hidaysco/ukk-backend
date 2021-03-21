@@ -22,7 +22,7 @@ export default class PengaduanHandler implements IHandler{
     private initRouter(){
         this.router.post(`${this.path}/submit-pengaduan`, auth, upload.array('photos'), this.submitPengaduan)
         this.router.get(`${this.path}/`, auth, this.getPengaduan)
-        this.router.get(`${this.path}/download-pengaduan`, auth,  this.downloadPengaduan)
+        this.router.get(`${this.path}/download-pengaduan`,  this.downloadPengaduan)
         this.router.get(`${this.path}/:id`, auth, this.getPengaduanById)
         this.router.put(`${this.path}/update-status/:id`, auth, this.updateStatus)
     }
@@ -85,13 +85,11 @@ export default class PengaduanHandler implements IHandler{
     }
 
     private downloadPengaduan = async(req: Request, res: Response)=>{
-        const payload = req.user.accessRole
-        
         const postRequest = async()=>{
-            return this.query.downloadPengaduan(payload)
+            return this.query.downloadPengaduan()
         }
         const response = (result: { err: any })=>{
-            (result.err) ? this.wrapper.downloadResponse(res, 'fail', result, `Failed Update Data`, 400)
+            (result.err) ? this.wrapper.response(res, 'fail', result, `Failed Update Data`, 400)
             : this.wrapper.downloadResponse(res, 'success', result, `Success Update Data`, 200);
         }
         response(await postRequest())
