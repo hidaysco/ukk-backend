@@ -5,7 +5,7 @@ import XLSX from "xlsx";
 export default interface IQueryWorker{
     getPengaduanPagination(payload: { page: number, limit: number, search: any, status: any }): any
     getPengaduanById(payload: string): any
-    downloadPengaduan(accessRole: string):any
+    downloadPengaduan():any
 }
 
 export class QueryWorker implements IQueryWorker{
@@ -70,10 +70,7 @@ export class QueryWorker implements IQueryWorker{
         return this.wrapper.data(result.data)
     }
 
-    async downloadPengaduan(accessRole: string) {
-        if (accessRole !== 'Admin') {
-            return this.wrapper.error('Only Admin Can Download Data Pengaduan')
-        }
+    async downloadPengaduan() {
         const param = [
             {
                 $match: {

@@ -8,6 +8,7 @@ import DashboardHandler from './handler/dashboardHandler';
 import { MongoConnection } from './utils/database/mongodb/connection';
 import bodyParser from "body-parser";
 import cors from "cors";
+import path from "path";
 require('dotenv').config();
 
 class App {
@@ -24,6 +25,7 @@ class App {
         this.defaultApps.use(bodyParser.json())
         this.defaultApps.use(bodyParser.urlencoded({extended:true}))
         this.defaultApps.use(cors())
+        this.defaultApps.use(express.static(path.resolve()))
     }
     protected initHandler(handler: IHandler[]){
         handler.map(x=>{
