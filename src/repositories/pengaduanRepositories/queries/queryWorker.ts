@@ -6,6 +6,7 @@ export default interface IQueryWorker{
     getPengaduanPagination(payload: { page: number, limit: number, search: any, status: any }): any
     getPengaduanById(payload: string): any
     downloadPengaduan():any
+    getTotalData(user: any): any
 }
 
 export class QueryWorker implements IQueryWorker{
@@ -16,8 +17,8 @@ export class QueryWorker implements IQueryWorker{
         this.wrapper = new Wrapper()
     }
     
-    async getPengaduanPagination(payload: { page: number, limit: number, search: any , status: any }) {
-        let { page, limit, search, status } = payload
+    async getPengaduanPagination(payload: { page: number, limit: number, search: any , status: any, user: any }) {
+        let { page, limit, search, status, user } = payload
         page = (!page) ? 1 : page;
         limit = (!limit) ? 10 : limit;
         const params: any[] = []
@@ -42,7 +43,11 @@ export class QueryWorker implements IQueryWorker{
                 $filter.push({'status': 'Pending'})
                 break;
             default:
+                $filter.push({'status': 'Pending'})
                 break;
+        }
+        if (status === 'history' && user.accessRole === 'User') {
+            $filter.push({'createdBy.nik': user.nik})
         }
         if ($filter.length>0) {
             $match = ({
@@ -99,5 +104,35 @@ export class QueryWorker implements IQueryWorker{
         location = location+'/'+file
         XLSX.writeFile(workbook, location)
         return this.wrapper.data(location)
+    }
+
+    async getTotalData(user: any) {
+        let queryHistory
+        if (user.accessRole === 'User') {
+            queryHistory = {
+                $and: [{
+                    $or: [
+                        {status: 'Rejected'},
+                        {status: 'Approved'}
+                    ]
+                },{'createdBy.nik': user.nik}]
+            }
+        }else{
+            queryHistory = {
+                $or: [
+                    {status: 'Rejected'},
+                    {status: 'Approved'}
+                ]
+            }
+        }
+        const pengaduan: any= await this.query.count({status:'Pending'})
+        const history: any= await this.query.count(queryHistory)
+        
+        const result = {
+            totalPengaduan: pengaduan,
+            totalHistory: history
+        }
+        
+        return this.wrapper.data(result)
     }
 }

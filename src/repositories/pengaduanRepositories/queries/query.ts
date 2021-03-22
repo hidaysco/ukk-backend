@@ -52,4 +52,10 @@ export class Query implements IQuery {
         const result = await this.db.find(param)
         return result
     }
+
+    async count(param: any){
+        this.db.setCollection('pengaduan')
+        const result = await this.db.count(param)
+        return result.data
+    }
 }
