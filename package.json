@@ -1,5 +1,5 @@
 {
-  "name": "auction",
+  "name": "ukk-backend",
   "version": "1.0.0",
   "author": "github.com/hidaysco",
   "main": "dist/server.js",

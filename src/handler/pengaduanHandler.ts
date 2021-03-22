@@ -23,6 +23,7 @@ export default class PengaduanHandler implements IHandler{
         this.router.post(`${this.path}/submit-pengaduan`, auth, upload.array('photos'), this.submitPengaduan)
         this.router.get(`${this.path}/`, auth, this.getPengaduan)
         this.router.get(`${this.path}/download-pengaduan`,  this.downloadPengaduan)
+        this.router.get(`${this.path}/total-pengaduan`, auth, this.getTotalData)
         this.router.get(`${this.path}/:id`, auth, this.getPengaduanById)
         this.router.put(`${this.path}/update-status/:id`, auth, this.updateStatus)
     }
@@ -46,7 +47,8 @@ export default class PengaduanHandler implements IHandler{
             limit: Number(req.query.limit),
             page: Number(req.query.page),
             search: req.query.search,
-            status: String(req.query.status)
+            status: String(req.query.status),
+            user: req.user
         }
         const postRequest = async()=>{
             return this.query.getPengaduanPagination(payload)
@@ -91,6 +93,18 @@ export default class PengaduanHandler implements IHandler{
         const response = (result: { err: any })=>{
             (result.err) ? this.wrapper.response(res, 'fail', result, `Failed Update Data`, 400)
             : this.wrapper.downloadResponse(res, 'success', result, `Success Update Data`, 200);
+        }
+        response(await postRequest())
+    }
+
+    private getTotalData = async(req: Request, res: Response)=>{
+        const payload = req.user
+        const postRequest = async()=>{
+            return this.query.getTotalData(payload)
+        }
+        const response = (result: { err: any })=>{
+            (result.err) ? this.wrapper.paginationResponse(res, 'fail', result, `Failed Get Data`, 400)
+            : this.wrapper.paginationResponse(res, 'success', result, `Success Get Data`, 200);
         }
         response(await postRequest())
     }
