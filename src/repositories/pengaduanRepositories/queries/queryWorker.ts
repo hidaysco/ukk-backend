@@ -1,6 +1,7 @@
 import { Wrapper } from '../../../utils/helpers/wrapper';
 import { Query } from './query';
 import XLSX from "xlsx";
+import { wrap } from 'node:module';
 
 export default interface IQueryWorker{
     getPengaduanPagination(payload: { page: number, limit: number, search: any, status: any }): any
@@ -55,13 +56,16 @@ export class QueryWorker implements IQueryWorker{
             })
             params.push({$match: $match})
         }
-        params.push({$sort: {updatedAt: -1}})
+        if (status === 'history') {
+            params.push({ $sort: {updatedAt: -1 }})
+        }else{
+            params.push({ $sort:{ createdAt: -1 }})
+        }
         
         const meta: any= await this.query.findMeta({ paramData: $match, limit, page })
         page = (page < 1 ? meta.totalPage : meta.totalPage < page ? 1 : page);    
         params.push({ $skip: (page - 1) * limit });
         params.push({ $limit: limit });
-        
         const result: any = await this.query.findAggregate(params)
         
         return this.wrapper.pagination(result.data, meta)
