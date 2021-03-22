@@ -38,7 +38,7 @@ export class QueryWorker implements IQueryWorker{
             { accessRole : 'Petugas' }]
         }
         params.push({$match: $match})
-        params.push({$sort: {cratedAt: -1}})
+        params.push({$sort: {createdAt: -1}})
         const meta: any= await this.query.findMeta({ paramData: $match, limit, page })
         page = (page < 1 ? meta.totalPage : meta.totalPage < page ? 1 : page);    
         params.push({ $skip: (page - 1) * limit });
