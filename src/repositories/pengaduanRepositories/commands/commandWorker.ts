@@ -62,13 +62,18 @@ export class CommandWorker implements ICommandWorker {
             return this.wrapper.error('Pengaduan Not Found')
         }
         const data = checkPengaduan.data
-        data.note = note
+        if (note) {
+            data.note = note
+        }
         switch (status) {
             case 'approve':
                 data.status = "Approved"
                 break;
             case 'reject':
                 data.status = "Rejected"
+                break;
+            case 'onprogress':
+                data.status = "On Progress"
                 break;
             default:
                 data.status = "Pending"

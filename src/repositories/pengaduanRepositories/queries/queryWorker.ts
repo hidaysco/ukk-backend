@@ -37,6 +37,9 @@ export class QueryWorker implements IQueryWorker{
             case 'approved':
                 $filter.push({'status': 'Approved'})
                 break;
+            case 'onprogress':
+                $filter.push({'status': 'On Progress'})
+                break;
             case 'rejected':
                 $filter.push({'status': 'Rejected'})
                 break;
